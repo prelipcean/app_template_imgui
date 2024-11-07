@@ -10,7 +10,8 @@ class WindowClass
 {
 public:
     WindowClass()
-        : currentPath(fs::current_path()), selectedEntry(fs::path{}){};
+        : currentPath(fs::current_path()), startingPath(fs::current_path()),
+        selectedEntry(fs::path{}){};
     void Draw(std::string_view label);
 
 private:
@@ -27,6 +28,7 @@ private:
 
 private:
     fs::path currentPath;
+    fs::path startingPath;
     fs::path selectedEntry;
     bool renameDialogOpen = false;
     bool deleteDialogOpen = false;

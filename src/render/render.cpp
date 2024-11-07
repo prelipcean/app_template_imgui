@@ -24,10 +24,10 @@ void WindowClass::Draw(std::string_view label)
     ImGui::SetNextWindowPos(window_pos);
 
     ImGui::Begin(label.data(), nullptr, window_flags);
-
     DrawMenu();
     ImGui::Separator();
 
+    // Begin inner window
     ImGui::SetNextWindowSize(ImVec2(window_size.x, content_height));
     ImGui::SetNextWindowPos(ImVec2(window_pos.x, upper_section_height));
     ImGui::Begin(fmt::format("##innerContent{}", currentPath.string()).c_str(),
@@ -36,6 +36,7 @@ void WindowClass::Draw(std::string_view label)
                 ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
     DrawContent();
     ImGui::End();
+    // End inner window
 
     ImGui::SetCursorPosY(ImGui::GetWindowHeight() - 100.0F);
     ImGui::Separator();
@@ -54,6 +55,13 @@ void WindowClass::DrawMenu(void)
         {
             currentPath = currentPath.parent_path();
         }
+    }
+
+    ImGui::SameLine();
+
+    if(ImGui::Button("Back to starting path"))
+    {
+        currentPath = startingPath;
     }
 
     ImGui::SameLine();
