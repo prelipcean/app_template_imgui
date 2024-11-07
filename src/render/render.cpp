@@ -34,7 +34,9 @@ void WindowClass::Draw(std::string_view label)
                 nullptr,
                 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
                 ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
+    ImGui::SetWindowFontScale(1.25f);
     DrawContent();
+    ImGui::SetWindowFontScale(1.0f);
     ImGui::End();
     // End inner window
 
@@ -78,6 +80,7 @@ void WindowClass::DrawContent(void)
         const auto is_file = entry.is_regular_file();
 
         auto entry_name = entry.path().filename().string();
+
         if (is_directory)
         {
             entry_name = "[D]" + entry_name;
