@@ -73,10 +73,12 @@ void WindowClass::DrawContent(void)
             if (is_directory)
             {
                 currentPath /= entry.path().filename();
+                selectedEntry.clear();
             }
-
-            selectedEntry = entry.path();
-
+            else
+            {
+                selectedEntry = entry.path();
+            }
         }
     }
 }
@@ -93,7 +95,12 @@ void WindowClass::DrawActions(void)
     }
     else
     {
-        ImGui::Text("Nothing selected!");
+        ImGui::Text("Selected file: n/a");
+        ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
+                            ImGui::GetStyle().Alpha * 0.0f); // Invisible button to claim the space
+        ImGui::Button("Non-clickable button");
+        ImGui::PopStyleVar();
+        return;
     }
 
 
