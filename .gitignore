@@ -1,6 +1,12 @@
 # Build directory
 build
 
+# ImGui ini file if created here
+imgui.ini
+
+# VS Code directory for now
+.vscode
+
 # Prerequisites
 *.d
 
