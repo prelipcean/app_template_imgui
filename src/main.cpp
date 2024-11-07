@@ -83,13 +83,14 @@ int main(int, char **)
     // Create window with graphics context
     auto *window = glfwCreateWindow(static_cast<std::int32_t>(WINDOW_WIDTH),
                                     static_cast<std::int32_t>(WINDOW_HEIGHT),
-                                    "GUI Window",
+                                    "GUI Platform",
                                     nullptr,
                                     nullptr);
     if (window == nullptr)
     {
         return 1;
     }
+    glfwSetWindowAttrib(window, GLFW_RESIZABLE, false);
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1); // Enable vsync
 

@@ -253,5 +253,5 @@ bool WindowClass::DeleteFile(const fs::path &path)
 
 void render(WindowClass &window_obj)
 {
-    window_obj.Draw("*Label*");
+    window_obj.Draw("*File Explorer*");
 }
