@@ -76,26 +76,38 @@ WindowClass::~WindowClass()
 void WindowClass::Draw(std::string_view label)
 {
     // Define window properties
-    constexpr static auto window_flags =
+    constexpr static auto main_window_flags =
         ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
         ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar;
-    constexpr static auto window_size = ImVec2(1280.0F, 720.0F); // Window size
-    constexpr static auto window_pos = ImVec2(0.0F, 0.0F);       // Window position
+    constexpr static auto main_window_size = ImVec2(1280.0F, 720.0F);
+    constexpr static auto main_window_pos = ImVec2(0.0F, 0.0F);
+    constexpr static auto upper_section_height = 100.0F;
+    constexpr static auto lower_section_height = 100.0F;
+    constexpr static auto content_height =
+        main_window_size.y - lower_section_height - upper_section_height;
 
-    // Set the size and position of the next window
-    ImGui::SetNextWindowSize(window_size);
-    ImGui::SetNextWindowPos(window_pos);
+    ImGui::SetNextWindowSize(main_window_size);
+    ImGui::SetNextWindowPos(main_window_pos);
 
-    // Begin the ImGui window with the specified label
-    ImGui::Begin(label.data(), nullptr, window_flags);
+    ImGui::Begin(label.data(), nullptr, main_window_flags);
 
-    DrawMenu();    // Draw the menu section
-    ImGui::Separator(); // Separator line between sections
-    DrawContent(); // Draw the content section
-    ImGui::Separator(); // Separator line between sections
-    DrawActions(); // Draw the actions section
-    ImGui::Separator(); // Separator line between sections
-    DrawFilter();  // Draw the filter section
+    DrawMenu();
+    ImGui::Separator();
+
+    ImGui::SetNextWindowSize(ImVec2(main_window_size.x, content_height));
+    ImGui::SetNextWindowPos(ImVec2(main_window_pos.x, upper_section_height));
+    ImGui::Begin(fmt::format("##innerContent{}", currentPath.string()).c_str(),
+                 nullptr,
+                 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+                     ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
+    DrawContent();
+    ImGui::End();
+
+    ImGui::SetCursorPosY(ImGui::GetWindowHeight() - lower_section_height);
+    ImGui::Separator();
+    DrawActions();
+    ImGui::Separator();
+    DrawFilter();
 
     // End the ImGui window
     ImGui::End();
@@ -225,6 +237,7 @@ void WindowClass::DrawFilter()
             ++filtered_file_count;
     }
 
+    spdlog::info("Filter applied: {}. Matching files: {}", extension_filter, filtered_file_count);
     ImGui::Text("Number of files: %u", filtered_file_count);
 }
 
