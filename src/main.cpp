@@ -63,6 +63,9 @@ int main(int, char **)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 #endif
 
+    // Disable window resizing
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
     // Create a window with an OpenGL context
     auto *window = glfwCreateWindow(static_cast<std::int32_t>(WINDOW_WIDTH),
                                     static_cast<std::int32_t>(WINDOW_HEIGHT),
