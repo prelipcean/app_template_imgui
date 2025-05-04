@@ -41,6 +41,11 @@ public:
      */
     void Draw(std::string_view label);
 
+    WindowClass(const WindowClass &) = delete;            // Disable copy constructor
+    WindowClass &operator=(const WindowClass &) = delete; // Disable copy assignment
+    WindowClass(WindowClass &&) = default;               // Enable move constructor
+    WindowClass &operator=(WindowClass &&) = default;    // Enable move assignment
+
 private:
     /**
      * @brief Draws the menu section of the UI.
