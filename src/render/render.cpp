@@ -15,21 +15,38 @@
  */
 void WindowClass::Draw(std::string_view label)
 {
-    // Define window properties
     constexpr static auto window_flags =
         ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
         ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar;
-    constexpr static auto window_size = ImVec2(1280.0F, 720.0F); // Window size
-    constexpr static auto window_pos = ImVec2(0.0F, 0.0F);       // Window position
+    constexpr static auto window_size = ImVec2(1280.0F, 720.0F);
+    constexpr static auto window_pos = ImVec2(0.0F, 0.0F);
 
-    // Set the size and position of the next window
     ImGui::SetNextWindowSize(window_size);
     ImGui::SetNextWindowPos(window_pos);
 
-    // Begin the ImGui window with the specified label
     ImGui::Begin(label.data(), nullptr, window_flags);
 
-    // End the ImGui window
+    ImGui::Text("Hello, %s!", label.data()); // Display the label in the window
+    
+    /* Below lines are copied from:
+    https://github.com/ocornut/imgui/blob/3543dfda953beefd9add1316328e2c7cfb4aa637/imgui_demo.cpp
+    */
+    ImGui::SeparatorText("ABOUT THIS DEMO:");
+    ImGui::BulletText("Sections below are demonstrating many aspects of the library.");
+    ImGui::BulletText("The \"Examples\" menu above leads to more demo contents.");
+    ImGui::BulletText("The \"Tools\" menu above gives access to: About Box, Style Editor,\n"
+                      "and Metrics/Debugger (general purpose Dear ImGui debugging tool).");
+
+    ImGui::SeparatorText("PROGRAMMER GUIDE:");
+    ImGui::BulletText("See the ShowDemoWindow() code in imgui_demo.cpp. <- you are here!");
+    ImGui::BulletText("See comments in imgui.cpp.");
+    ImGui::BulletText("See example applications in the examples/ folder.");
+    ImGui::BulletText("Read the FAQ at ");
+    ImGui::SameLine(0, 0);
+    ImGui::TextLinkOpenURL("https://www.dearimgui.com/faq/");
+    ImGui::BulletText("Set 'io.ConfigFlags |= NavEnableKeyboard' for keyboard controls.");
+    ImGui::BulletText("Set 'io.ConfigFlags |= NavEnableGamepad' for gamepad controls.");
+
     ImGui::End();
 }
 
