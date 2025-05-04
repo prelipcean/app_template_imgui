@@ -87,9 +87,15 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(glfw EXCLUDE_FROM_ALL)
 
 # Add executable
-add_executable(${PROJECT_NAME}
-  ${LIST_SRC}
-)
+if(WIN32)
+  add_executable(${PROJECT_NAME} WIN32
+    ${LIST_SRC}
+  )
+else()
+  add_executable(${PROJECT_NAME}
+    ${LIST_SRC}
+  )
+endif()
 
 # Include directories
 target_include_directories(${PROJECT_NAME} PUBLIC
