@@ -17,14 +17,11 @@ class WindowClass
 {
 public:
     /**
-     * @brief Draws a UI element with the specified label.
+     * @brief Constructor to initialize the window class.
      * 
-     * This method is responsible for rendering a UI element with the given label.
-     * It is typically called during the rendering loop.
-     * 
-     * @param label The label to display for the UI element.
+     * Initializes the current path to the current working directory.
      */
-    void Draw(std::string_view label);
+    WindowClass();
 
     /**
      * @brief Destructor to clean up resources.
@@ -33,6 +30,16 @@ public:
      * are properly released.
      */
     ~WindowClass();
+    
+    /**
+     * @brief Draws a UI element with the specified label.
+     * 
+     * This method is responsible for rendering a UI element with the given label.
+     * It is typically called during the rendering loop.
+     * 
+     * @param label The label to display for the UI element.
+     */
+    void Draw(std::string_view label);
 
 private:
     /**

@@ -6,6 +6,32 @@
 #include "render.hpp" // Header file for WindowClass and render function
 
 /**
+ * @brief Constructor for the WindowClass.
+ * 
+ * Initializes the current path to the current working directory.
+ */
+WindowClass::WindowClass() : currentPath(fs::current_path())
+{
+    std::cout << "WindowClass initialized with current path: " << currentPath << std::endl;
+}
+
+/**
+ * @brief Destructor for the WindowClass.
+ * 
+ * Cleans up any resources associated with the window or rendering context.
+ */
+WindowClass::~WindowClass()
+{
+    // Example cleanup logic (if needed)
+    // If using a library like GLFW, you might destroy the window here:
+    // glfwDestroyWindow(static_cast<GLFWwindow*>(m_windowHandle));
+    // std::cout << "WindowClass resources cleaned up." << std::endl;
+
+    // For now, just log that the destructor was called
+    std::cout << "WindowClass destructor called. Resources cleaned up." << std::endl;
+}
+
+/**
  * @brief Draws a UI element with the specified label.
  * 
  * This method sets up an ImGui window with predefined size, position, and flags.
@@ -42,29 +68,29 @@ void WindowClass::Draw(std::string_view label)
 }
 
 /**
- * @brief Destructor for the WindowClass.
- * 
- * Cleans up any resources associated with the window or rendering context.
- */
-WindowClass::~WindowClass()
-{
-    // Example cleanup logic (if needed)
-    // If using a library like GLFW, you might destroy the window here:
-    // glfwDestroyWindow(static_cast<GLFWwindow*>(m_windowHandle));
-    // std::cout << "WindowClass resources cleaned up." << std::endl;
-
-    // For now, just log that the destructor was called
-    std::cout << "WindowClass destructor called. Resources cleaned up." << std::endl;
-}
-
-/**
  * @brief Draws the menu section of the UI.
  * 
  * Displays navigation options, such as "Go Up" to navigate to the parent directory.
  */
 void WindowClass::DrawMenu()
 {
-    ImGui::Text("DrawMenu"); // Placeholder for menu drawing logic
+    if (ImGui::Button("Go Up"))
+    {
+        if (currentPath.has_parent_path())
+        {
+            currentPath = currentPath.parent_path();
+        }
+    }
+
+    ImGui::SameLine();
+    if (currentPath.empty())
+    {
+        ImGui::Text("Current directory: [Invalid Path]");
+    }
+    else
+    {
+        ImGui::Text("Current directory: %s", currentPath.string().c_str());
+    }
 }
 
 /**
