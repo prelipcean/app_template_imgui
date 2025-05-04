@@ -29,6 +29,14 @@ void WindowClass::Draw(std::string_view label)
     // Begin the ImGui window with the specified label
     ImGui::Begin(label.data(), nullptr, window_flags);
 
+    DrawMenu();    // Draw the menu section
+    ImGui::Separator(); // Separator line between sections
+    DrawContent(); // Draw the content section
+    ImGui::Separator(); // Separator line between sections
+    DrawActions(); // Draw the actions section
+    ImGui::Separator(); // Separator line between sections
+    DrawFilter();  // Draw the filter section
+
     // End the ImGui window
     ImGui::End();
 }
@@ -50,6 +58,93 @@ WindowClass::~WindowClass()
 }
 
 /**
+ * @brief Draws the menu section of the UI.
+ * 
+ * Displays navigation options, such as "Go Up" to navigate to the parent directory.
+ */
+void WindowClass::DrawMenu()
+{
+    ImGui::Text("DrawMenu"); // Placeholder for menu drawing logic
+}
+
+/**
+ * @brief Draws the content section of the UI.
+ * 
+ * Lists files and directories in the current path. Allows selection of entries.
+ */
+void WindowClass::DrawContent()
+{
+    ImGui::Text("DrawContent"); // Placeholder for content drawing logic
+}
+
+/**
+ * @brief Draws the actions section of the UI.
+ * 
+ * Displays actions (e.g., Open, Rename, Delete) for the selected file or directory.
+ */
+void WindowClass::DrawActions()
+{
+    ImGui::Text("DrawActions"); // Placeholder for actions drawing logic 
+}
+
+/**
+ * @brief Draws the filter section of the UI.
+ * 
+ * Allows filtering files by extension and displays the count of matching files.
+ */
+void WindowClass::DrawFilter()
+{
+    ImGui::Text("DrawFilter"); // Placeholder for filter drawing logic
+}
+
+/**
+ * @brief Opens the selected file with the default editor.
+ */
+void WindowClass::openFileWithDefaultEditor()
+{
+
+}
+
+/**
+ * @brief Displays a popup for renaming a file.
+ */
+void WindowClass::renameFilePopup()
+{
+
+}
+
+/**
+ * @brief Displays a popup for deleting a file.
+ */
+void WindowClass::deleteFilePopup()
+{
+
+}
+
+/**
+ * @brief Renames a file.
+ * 
+ * @param old_path The current path of the file.
+ * @param new_path The new path for the file.
+ * @return true if the file was successfully renamed, false otherwise.
+ */
+bool WindowClass::renameFile(const fs::path &old_path, const fs::path &new_path)
+{
+
+}
+
+/**
+ * @brief Deletes a file.
+ * 
+ * @param path The path of the file to delete.
+ * @return true if the file was successfully deleted, false otherwise.
+ */
+bool WindowClass::deleteFile(const fs::path &path)
+{
+
+}
+
+/**
  * @brief Renders the UI using the provided WindowClass object.
  * 
  * This function calls the `Draw` method of the `WindowClass` object
@@ -60,5 +155,5 @@ WindowClass::~WindowClass()
 void render(WindowClass &window_obj)
 {
     // Call the Draw method with a hardcoded label
-    window_obj.Draw("*Label*");
+    window_obj.Draw("File Explorer Tool");
 }
