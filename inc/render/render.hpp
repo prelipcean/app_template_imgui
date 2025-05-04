@@ -30,7 +30,7 @@ public:
      * are properly released.
      */
     ~WindowClass();
-    
+
     /**
      * @brief Draws a UI element with the specified label.
      * 

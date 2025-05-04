@@ -72,7 +72,15 @@ list(LENGTH LIST_INC LIST_INC_LEN)
 message(STATUS "Length of list LIST_INC is: ${LIST_INC_LEN}")
 
 # Add fmt library
-add_subdirectory(fmt EXCLUDE_FROM_ALL)
+# add_subdirectory(fmt EXCLUDE_FROM_ALL)
+# // Replace this:
+# fmt::format("Hello, {}", "world");
+# // With this:
+# spdlog::info("Hello, {}", "world");
+
+
+# Add spdlog library
+add_subdirectory(spdlog)
 
 # Find and link OpenGL
 # Note for Linux: You may need to install the OpenGL development package (e.g., libgl1-mesa-dev)
@@ -112,10 +120,14 @@ add_compile_definitions(
 
 # Link libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE
-  fmt::fmt-header-only
+  #fmt::fmt-header-only
+  spdlog::spdlog
   glfw
   OpenGL::GL
 )
+
+# Enable spdlog's header-only mode
+target_compile_definitions(${PROJECT_NAME} PRIVATE SPDLOG_COMPILED_LIB=0)
 
 # Platform-specific dependencies
 if(UNIX)

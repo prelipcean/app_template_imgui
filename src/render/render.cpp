@@ -5,14 +5,46 @@
 
 #include "render.hpp" // Header file for WindowClass and render function
 
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/basic_file_sink.h" // For file logging
+
+
 /**
  * @brief Constructor for the WindowClass.
  * 
  * Initializes the current path to the current working directory.
  */
-WindowClass::WindowClass() : currentPath(fs::current_path())
+WindowClass::WindowClass() : currentPath(fs::current_path()), selectedEntry(fs::path{}) 
 {
-    std::cout << "WindowClass initialized with current path: " << currentPath << std::endl;
+    // Ensure the logs directory exists
+    try
+    {
+        fs::create_directories("logs");
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Failed to create logs directory: " << e.what() << std::endl;
+    }
+
+    // Initialize spdlog with a file sink
+    try
+    {
+        if (!spdlog::get("file_logger"))
+        {
+            static auto logger = spdlog::basic_logger_mt("file_logger", "logs/application.log");
+            spdlog::set_default_logger(logger);
+            spdlog::set_level(spdlog::level::info); // Set log level to info
+        }
+        spdlog::info("Logger initialized successfully.");
+    }
+    catch (const spdlog::spdlog_ex &e)
+    {
+        std::cerr << "Failed to initialize file logger: " << e.what() << std::endl;
+    }
+
+    // Log the initialization message
+    spdlog::info("WindowClass initialized with current path: {}", currentPath.string());
+    //std::cout << "WindowClass initialized with current path: " << currentPath << std::endl;
 }
 
 /**
@@ -28,7 +60,9 @@ WindowClass::~WindowClass()
     // std::cout << "WindowClass resources cleaned up." << std::endl;
 
     // For now, just log that the destructor was called
-    std::cout << "WindowClass destructor called. Resources cleaned up." << std::endl;
+    spdlog::info("WindowClass destructor called. Resources cleaned up.");
+
+    //std::cout << "WindowClass destructor called. Resources cleaned up." << std::endl;
 }
 
 /**
@@ -100,7 +134,26 @@ void WindowClass::DrawMenu()
  */
 void WindowClass::DrawContent()
 {
-    ImGui::Text("DrawContent"); // Placeholder for content drawing logic
+    for (const auto &entry : fs::directory_iterator(currentPath))
+    {
+        const auto is_selected = entry.path() == selectedEntry;
+        const auto is_directory = entry.is_directory();
+        const auto is_file = entry.is_regular_file();
+        auto entry_name = entry.path().filename().string();
+
+        if (is_directory)
+            entry_name = "[D]" + entry_name;
+        else if (is_file)
+            entry_name = "[F]" + entry_name;
+
+        if (ImGui::Selectable(entry_name.c_str(), is_selected))
+        {
+            if (is_directory)
+                currentPath /= entry.path().filename();
+
+            selectedEntry = entry.path();
+        }
+    }
 }
 
 /**
