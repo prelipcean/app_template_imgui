@@ -25,14 +25,14 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # Platform-specific messages
-if (UNIX)
+if(UNIX)
   message(STATUS "Unix system detected")
 else()
   message(STATUS "Windows system detected")
 endif()
 
 # Compiler-specific options
-if (MSVC)
+if(MSVC)
   add_compile_options(/W4 /WX) # Enable warnings as errors for MSVC
 else()
   add_compile_options(-Wall -Wfatal-errors) # Enable warnings for GCC/Clang
@@ -77,9 +77,12 @@ add_subdirectory(fmt EXCLUDE_FROM_ALL)
 # Find and link OpenGL
 # Note for Linux: You may need to install the OpenGL development package (e.g., libgl1-mesa-dev)
 find_package(OpenGL REQUIRED)
+if(NOT OpenGL_FOUND)
+  message(FATAL_ERROR "OpenGL not found. Please install OpenGL development libraries.")
+endif()
 
 # Configure GLFW
-# Note for Linux: You may need to install the GLFW development package (e.g., libglfw3-dev 
+# Note for Linux: You may need to install the GLFW development package (e.g., libglfw3-dev
 # OR libwayland-dev libxkbcommon-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev)
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
@@ -108,15 +111,23 @@ add_compile_definitions(
 )
 
 # Link libraries
-target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt-header-only)
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
-target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
+target_link_libraries(${PROJECT_NAME} PRIVATE
+  fmt::fmt-header-only
+  glfw
+  OpenGL::GL
+)
 
 # Platform-specific dependencies
 if(UNIX)
   target_link_libraries(${PROJECT_NAME} PRIVATE dl pthread) # Add Linux-specific libraries
 endif()
 
+# Define resource directory
+set(RESOURCE_DIR ${CMAKE_SOURCE_DIR}/resources)
+
+# Copy font files to the output directory
+file(COPY ${RESOURCE_DIR}/fonts DESTINATION ${CMAKE_BINARY_DIR}/resources)
+
 # Installation rules
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/resources DESTINATION share/${PROJECT_NAME}) # Example for resources
+install(DIRECTORY ${RESOURCE_DIR}/fonts DESTINATION share/${PROJECT_NAME}/resources)

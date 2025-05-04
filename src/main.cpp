@@ -93,6 +93,11 @@ int main(int, char **)
     // Create an instance of the custom window class
     WindowClass window_obj;
 
+    //Load fonts
+    ImGuiIO &io = ImGui::GetIO();
+    io.Fonts->AddFontFromFileTTF("resources/fonts/cousine/Cousine-Regular.ttf", 25.0f);
+    ImGui_ImplOpenGL3_CreateFontsTexture(); // Rebuild font atlas
+
     // Setup ImPlot context
     ImPlot::CreateContext();
 
