@@ -5,8 +5,8 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_opengl3_loader.h"
-#include <imgui.h>
-#include <implot.h>
+#include "imgui.h"
+#include "implot.h"
 
 // OpenGL and GLFW includes
 #if defined(IMGUI_IMPL_OPENGL_ES2)
@@ -66,7 +66,7 @@ int main(int, char **)
     // Create a window with an OpenGL context
     auto *window = glfwCreateWindow(static_cast<std::int32_t>(WINDOW_WIDTH),
                                     static_cast<std::int32_t>(WINDOW_HEIGHT),
-                                    "GUI Window",
+                                    "GUI Window Template",
                                     nullptr,
                                     nullptr);
     if (window == nullptr)
